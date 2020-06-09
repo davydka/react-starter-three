@@ -7,4 +7,5 @@ export const TYPES = {
     'H6': 'h6',
     'B1': 'b1',
     'B2': 'b2',
+    'DIV': 'div',
 };
