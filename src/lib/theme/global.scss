@@ -1,4 +1,5 @@
 @import "reset";
+@import "variables";
 
 *,
 *::after,
@@ -15,9 +16,7 @@ body {
   font-size: 1.6rem; // resets default font-size to 16px (and scales what user defines in browser settings)
   box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
+  font-family: $font-family;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

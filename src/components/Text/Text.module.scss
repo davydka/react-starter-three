@@ -1,0 +1,33 @@
+@import 'src/lib/theme/includes';
+
+.h1 {
+  @include type-headline-1();
+}
+
+.h2 {
+  @include type-headline-2();
+}
+
+.h3 {
+  @include type-headline-3();
+}
+
+.h4 {
+  @include type-headline-4();
+}
+
+.h5 {
+  @include type-headline-5();
+}
+
+.h6 {
+  @include type-headline-6();
+}
+
+.b1 {
+
+}
+
+.b2 {
+
+}
