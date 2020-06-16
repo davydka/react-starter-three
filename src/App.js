@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import classnames from 'classnames/bind';
+import gsap from 'gsap'
 
 import { gsapBlur } from 'lib/utils/gsap-blur'
 
@@ -12,6 +13,9 @@ const cx = classnames.bind(styles);
 function App() {
   useEffect(() => {
     gsapBlur()
+    gsap.config({
+      force3D: true,
+    })
   }, [])
 
   return (

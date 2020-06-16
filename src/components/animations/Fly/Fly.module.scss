@@ -1,0 +1,10 @@
+@import 'src/lib/theme/includes';
+
+.fly {
+  display: inline-block;
+
+  & > * {
+    display: inline-block;
+    transform: translate3d(-50%, -50%, 0);
+  }
+}

@@ -8,4 +8,5 @@ export const TYPES = {
     'B1': 'b1',
     'B2': 'b2',
     'DIV': 'div',
+    'SPAN': 'span',
 };
