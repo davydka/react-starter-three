@@ -1,5 +1,5 @@
 @import "reset";
-@import "variables";
+@import "variables.module";
 
 *,
 *::after,
@@ -10,6 +10,8 @@
 html {
   // defines what 1rem is
   font-size: 62.5%; //1 rem = 10px; 10px/16px = 62.5%
+  height: 100%;
+  width: 100%;
 }
 
 body {
@@ -21,9 +23,16 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  width: 100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
 }

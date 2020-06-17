@@ -12,3 +12,11 @@ $black: #000000;
 $S5: 0.5rem;
 $S10: 1rem;
 $S20: 2rem;
+
+:export {
+  darkGrey: $dark-grey;
+  lightGrey: $light-grey;
+  offWhite: $off-white;
+  white: $white;
+  black: $black;
+}
