@@ -14,23 +14,23 @@ const BScene = () => {
     <div className={cx('container')}>
       <Engine canvasId="canvas">
         <Scene clearColor={new Color3(1.0, 1.0, 1.0)}>
+          {/*https://doc.babylonjs.com/babylon101/cameras#constructing-an-arc-rotate-camera*/}
           <arcRotateCamera
-            name="camera1"
+            name="arcRotateCamera"
             alpha={-Math.PI / 2}
-            beta={(0.5 + (Math.PI / 6))}
-            radius={16}
+            beta={(Math.PI / 2) / 2}
+            radius={8.5}
             target={Vector3.Zero()}
             minZ={0.1}
-            // lowerRadiusLimit={8} upperRadiusLimit={20} upperBetaLimit={Math.PI / 2}
-            // fov={2.0944}
+            fov={(75 * Math.PI) / 180}
           />
           <hemisphericLight
-            name="light1"
+            name="hemisphericLight"
             intensity={0.7}
-            direction={Vector3.Up()}
+            direction={new Vector3(0, 1, -1)}
           />
-          <ground name="ground1" width={30} height={30} subdivisions={12} wireframe={true}>
-            <standardMaterial name='starMaterial' wireframe={true} />
+          <ground name="ground" width={30} height={30} subdivisions={12} wireframe={true}>
+            <standardMaterial name='groundMaterial' wireframe={true} />
           </ground>
         </Scene>
       </Engine>
