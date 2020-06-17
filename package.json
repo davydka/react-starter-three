@@ -20,6 +20,7 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "react-three-fiber": "^4.2.10",
+    "storybook-dark-mode": "^0.6.1",
     "three": "^0.117.1"
   },
   "scripts": {
