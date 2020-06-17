@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { Engine, Scene } from 'react-babylonjs'
 import { Vector3, Color3 } from '@babylonjs/core'
 import classnames from 'classnames/bind'

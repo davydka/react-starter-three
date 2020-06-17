@@ -4,7 +4,7 @@ import { OrbitControls } from 'drei'
 
 const TScene = ({ children }) => {
   return (
-    <Canvas camera={{ position: [0, 6, 6] }}>
+    <Canvas camera={{ position: [0, 6, 6], fov: 75 }}>
       <OrbitControls />
       <ambientLight/>
       <pointLight position={[10, 10, 10]}/>
