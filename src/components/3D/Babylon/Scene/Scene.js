@@ -19,10 +19,10 @@ const BScene = () => {
             name="arcRotateCamera"
             alpha={-Math.PI / 2}
             beta={(Math.PI / 2) / 2}
-            radius={8.5}
+            radius={24}
             target={Vector3.Zero()}
             minZ={0.1}
-            fov={(75 * Math.PI) / 180}
+            fov={(45 * Math.PI) / 180}
           />
           <hemisphericLight
             name="hemisphericLight"
