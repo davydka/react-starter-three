@@ -2,18 +2,18 @@ import React from 'react'
 
 import { Page } from 'components/layout/Page'
 
-import { TScene } from './'
+import { BScene } from './'
 
 import { darkGrey, white } from 'lib/theme/variables.module.scss'
 
 export default {
-  title: '3D/Three',
+  title: '3D/Babylon',
 }
 
 export const scene = () => {
   return (
     <Page style={{ backgroundColor: white, color: darkGrey }}>
-      <TScene />
+      <BScene />
     </Page>
   )
 }
