@@ -8,7 +8,7 @@ import styles from './Scene.module.scss'
 const cx = classnames.bind(styles)
 
 
-const BScene = () => {
+const BScene = ({ children = null, showGridHelper = false }) => {
 
   return (
     <div className={cx('container')}>
@@ -17,7 +17,7 @@ const BScene = () => {
           {/*https://doc.babylonjs.com/babylon101/cameras#constructing-an-arc-rotate-camera*/}
           <arcRotateCamera
             name="arcRotateCamera"
-            alpha={-Math.PI / 2}
+            alpha={Math.PI / 2}
             beta={(Math.PI / 2) / 2}
             radius={24}
             target={Vector3.Zero()}
@@ -27,11 +27,14 @@ const BScene = () => {
           <hemisphericLight
             name="hemisphericLight"
             intensity={0.7}
-            direction={new Vector3(0, 1, -1)}
+            direction={new Vector3(0, 1, 1)}
           />
-          <ground name="ground" width={30} height={30} subdivisions={12} wireframe={true}>
-            <standardMaterial name='groundMaterial' wireframe={true} />
-          </ground>
+          {(!children || showGridHelper) && (
+            <ground name="ground" width={30} height={30} subdivisions={12} wireframe={true}>
+              <standardMaterial name='groundMaterial' wireframe={true}/>
+            </ground>
+          )}
+          {children}
         </Scene>
       </Engine>
     </div>
