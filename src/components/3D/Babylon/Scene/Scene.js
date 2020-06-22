@@ -12,7 +12,7 @@ const BScene = ({ children = null, showGridHelper = false }) => {
 
   return (
     <div className={cx('container')}>
-      <Engine canvasId="canvas">
+      <Engine antialias adaptToDeviceRatio canvasId="canvas">
         <Scene clearColor={new Color3(1.0, 1.0, 1.0)}>
           {/*https://doc.babylonjs.com/babylon101/cameras#constructing-an-arc-rotate-camera*/}
           <arcRotateCamera
