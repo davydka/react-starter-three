@@ -13578,6 +13578,11 @@ use-callback-ref@^1.2.1:
   resolved "https://registry.yarnpkg.com/use-callback-ref/-/use-callback-ref-1.2.4.tgz#d86d1577bfd0b955b6e04aaf5971025f406bea3c"
   integrity sha512-rXpsyvOnqdScyied4Uglsp14qzag1JIemLeTWGKbwpotWht57hbP78aNT+Q4wdFKQfQibbUX4fb6Qb4y11aVOQ==
 
+use-cannon@^0.4.9:
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/use-cannon/-/use-cannon-0.4.9.tgz#580198a6fa30be0af38e5d7f5587d79fa873e2e9"
+  integrity sha512-Oyiw7XQLrpO7Pds21uBuFLqo7cBTpNTxnj2Vf4wVXsIUYqV3t8wlyQ1L90IS79tXu69pgPumeX9adGLPBgNSpA==
+
 use-sidecar@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/use-sidecar/-/use-sidecar-1.0.2.tgz#e72f582a75842f7de4ef8becd6235a4720ad8af6"
