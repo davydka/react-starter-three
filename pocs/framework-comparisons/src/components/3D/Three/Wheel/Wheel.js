@@ -1,33 +1,7 @@
 import React, { useRef } from 'react'
 import { useFrame, useLoader } from 'react-three-fiber'
-import { useBox, usePlane } from 'use-cannon'
+import { useBox } from 'use-cannon'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-
-const Plane = (props) => {
-  const [ref] = usePlane(() => ({ ...props }))
-  return (
-    <mesh ref={ref} receiveShadow>
-      <planeBufferGeometry attach="geometry" args={[15, 15]}/>
-      <meshStandardMaterial
-        attach="material"
-        color='#990099'
-      />
-    </mesh>
-  )
-}
-
-const Cube = (props) => {
-  const [ref] = useBox(() => ({ mass: 1, position: [2, 5, 0], ...props }))
-  return (
-    <mesh ref={ref}>
-      <boxBufferGeometry attach="geometry"/>
-      <meshStandardMaterial
-        attach="material"
-        color='#009900'
-      />
-    </mesh>
-  )
-}
 
 const Collection = ({nodes}, props) => {
   const wheelNodes = Object.keys(nodes).reduce((a, node, index) => {
@@ -69,14 +43,12 @@ const Collection = ({nodes}, props) => {
 
 const Wheel = (props) => {
   const { nodes, materials } = useLoader(GLTFLoader, '/assets/models/wheel.gltf')
-  console.log(nodes)
 
   return (
     <>
       <group {...props} dispose={null}>
         <mesh {...nodes.Pointer} />
         <Collection nodes={nodes} materials={materials} />
-        {/*<Plane rotation={[-Math.PI / 2, 0, 0]}/>*/}
       </group>
     </>
   )

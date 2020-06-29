@@ -1,21 +1,7 @@
 import React, { Suspense } from 'react'
 import { Canvas } from 'react-three-fiber'
-import { Physics, useBox, usePlane } from 'use-cannon'
+import { Physics } from 'use-cannon'
 import { OrbitControls } from 'drei'
-
-const Plane = (props) => {
-  const [ref] = usePlane(() => ({ ...props }))
-  return (
-    <mesh ref={ref} receiveShadow>
-      <planeBufferGeometry attach="geometry" args={[15, 15]}/>
-      {/*<shadowMaterial attach="material" color="#171717" />*/}
-      <meshStandardMaterial
-        attach="material"
-        color='#990099'
-      />
-    </mesh>
-  )
-}
 
 const TScene = ({ children = null, showGridHelper = false }) => {
   return (
@@ -28,7 +14,6 @@ const TScene = ({ children = null, showGridHelper = false }) => {
         <Suspense fallback={null}>
           {children}
         </Suspense>
-        {/*<Plane rotation={[-Math.PI / 2, 0, 0]}/>*/}
       </Physics>
     </Canvas>
   )
