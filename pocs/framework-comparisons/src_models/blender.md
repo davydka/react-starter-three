@@ -1,0 +1,9 @@
+- `alias blender='/Applications/Blender.app/Contents/MacOS/Blender'`
+- `blender wheel.blend -- Callahan Rafael Abbey "Nick B" Muriel Aleks Rituj Neil Mikhael "Amy P" "Alice" "Carolyn"`
+- Go to `Scripting` tab
+- Open `exploring.py`
+    - Experiment with how arguments after `--` are passed to the script
+    - Experiment with converting text items to meshes
+    - todo: think about how to handle arbitrary number of 'names'
+        - evenly distribute `PlaneXX` items
+        - evenly distribute `TextXX` items
