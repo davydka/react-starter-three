@@ -26,3 +26,10 @@ export const Mask = () => {
   )
 }
 
+export const Wheel = () => {
+  return (
+    <Page style={{ backgroundColor: white, color: darkGrey }}>
+      <ModelViewer model={'/assets/models/Wheel.gltf'} cameraOrbit={`${(Math.PI / 2) * 180}rad ${(Math.PI / 2) / 1.6}rad 24m`}/>
+    </Page>
+  )
+}
