@@ -26,7 +26,6 @@ const initThreeScene = (spec) => {
         // head.visible = false
         head.renderOrder = 0
         head.material.colorWrite = false
-        console.log(head)
         jeelizThree.faceObject.add(gltf.scene)
     },
     undefined,
