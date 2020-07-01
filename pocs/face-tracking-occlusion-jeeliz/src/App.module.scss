@@ -1,0 +1,22 @@
+.app {
+  min-height: 100vh;
+  max-width: 100vw;
+}
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  z-index: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.controls {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1;
+}
+
