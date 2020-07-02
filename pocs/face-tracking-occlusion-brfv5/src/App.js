@@ -125,11 +125,11 @@ const initTextures = () => {
 const initThreeScene = (scene, camera, renderer, controls, t3d) => {
   // const jeelizThree = THREE.JeelizHelper.init(spec, handleFaceDetect)
 
-  t3d.current.modelNodes      = []
+  t3d.current.modelNodes = []
   // t3d.occlusionNodes  = []
-  t3d.current.baseNodes       = []
-  t3d.current.transforms      = []
-  t3d.current.materialIdMap   = []
+  t3d.current.baseNodes = []
+  t3d.current.transforms = []
+  t3d.current.materialIdMap = []
   t3d.current.materialNameMap = []
 
   initTextures()
@@ -147,7 +147,6 @@ const initThreeScene = (scene, camera, renderer, controls, t3d) => {
 
   camera.current = new THREE.PerspectiveCamera(20, 640 / 480, 0.1, 10000)
   t3d.current.camera = camera.current
-  // camera.current.position.z = 2.5
   camera.current.position.set(0, 0, 0)
   camera.current.lookAt(new THREE.Vector3(0, 0, 1))
   camera.current.updateProjectionMatrix()
@@ -156,18 +155,45 @@ const initThreeScene = (scene, camera, renderer, controls, t3d) => {
     alpha: true,
     antialias: true,
     canvas: document.getElementById('canvas'),
-    powerPreference:  'high-performance', //'high-performance' 'low-power'
+    powerPreference: 'high-performance', //'high-performance' 'low-power'
   })
   t3d.current.renderer = renderer.current
   renderer.current.setSize(640, 480)
   renderer.current.setClearColor(0x000000, 0.0)
+  // renderer.current.setClearColor(0x550055, 1.0)
   // renderer.current.setPixelRatio(window.devicePixelRatio)
 
   // controls.current = new THREE.OrbitControls(camera.current, renderer.current.domElement)
 
   setNumFaces(t3d, 1)
 
-  // Load a model
+  const fileLoader = new THREE.FileLoader()
+  fileLoader.load('/assets/models/occlusion_head_reference.json', function(response) {
+      const objLoader = new THREE.ObjectLoader()
+
+      const object3D = objLoader.parse(JSON.parse(response))
+      object3D.name = 'occlusion'
+      // t3d.current.occlusion = object3D
+      // object3D.scale.set(.1, .1, .1)
+      object3D.traverse((child) => {
+        // child.renderOrder = 0
+        if (child.material) {
+          // console.log(child)
+          child.material.color.set(0x0000ff)
+          // child.material.opacity    = 0.0
+          child.material.colorWrite = false
+        }
+      })
+      object3D.renderOrder = 1
+      // object3D.material.colorWrite = false
+      // scene.current.add(object3D)
+      // console.log(scene.current)
+    },
+    undefined,
+    function(error) {
+      console.error(error)
+    })
+
   const loader = new THREE.GLTFLoader()
   loader.load('/assets/models/mask.gltf', function(gltf) {
       // const scale = 0.1
@@ -178,6 +204,11 @@ const initThreeScene = (scene, camera, renderer, controls, t3d) => {
       maskMesh.renderOrder = 1
       t3d.current.mask = maskMesh
 
+      const occlusion = gltf.scene.children.filter(child => child.name === 'occlusion_mesh')[0]
+      // occlusion.material = maskMaterial
+      occlusion.material.colorWrite = false
+      occlusion.renderOrder = 0
+      t3d.current.occlusion = occlusion
       // head.visible = false
       // head.renderOrder = 0
       // head.material.colorWrite = false
@@ -185,130 +216,121 @@ const initThreeScene = (scene, camera, renderer, controls, t3d) => {
       // jeelizThree.faceObject.add(gltf.scene)
       // scene.current.add(gltf.scene)
       scene.current.add(maskMesh)
+      scene.current.add(occlusion)
       // console.log(scene.current)
 
-      const pLight = new THREE.PointLight(0xffffff, 1, 36)
-      pLight.position.set(10, 10, 10)
-      // jeelizThree.faceObject.add(pLight)
-      // jeelizThree.faceObject.add(new THREE.AmbientLight( 0xffffff, 1.4 ))
+      const pLight = new THREE.PointLight(0xffffff, 1, 100)
+      pLight.position.set(-15, -0, 1302)
+      const sphereSize = 10
+      const pointLightHelper = new THREE.PointLightHelper(pLight, sphereSize)
+      // scene.current.add(pointLightHelper)
+      scene.current.add(pLight)
+      scene.current.add(new THREE.AmbientLight(0xffffff, 0.5))
     },
     undefined,
     function(error) {
       console.error(error)
     })
-
-  const fileLoader = new THREE.FileLoader()
-  fileLoader.load('/assets/models/occlusion_head_reference.json', function(response) {
-      const objLoader = new THREE.ObjectLoader()
-
-      const object3D = objLoader.parse(JSON.parse(response))
-      object3D.name = 'occlusion'
-      // object3D.scale.set(.1, .1, .1)
-      // scene.current.add(object3D)
-    },
-    undefined,
-    function(error) {
-      console.error(error)
-    })
-
-  // THREECAMERA = THREE.JeelizHelper.create_camera()
 }
+
 let count = 0
 const updateByFace = (brfv5App, t3d, face, index, show) => {
-  if(!t3d.current.baseNodes || !t3d.current.mask) { return }
+  if (!t3d.current.baseNodes || !t3d.current.mask) {
+    return
+  }
   count = count + 0.1
-  const transforms    = t3d.current.transforms
-  const baseNodes     = t3d.current.baseNodes
-  const scene         = t3d.current.scene
+  const transforms = t3d.current.transforms
+  const baseNodes = t3d.current.baseNodes
+  const scene = t3d.current.scene
   const mask = t3d.current.mask
+  const occlusion = t3d.current.occlusion
   // console.log(scene)
 
-  const baseNode      = baseNodes[index]
-  const transform     = transforms[index]
+  const baseNode = baseNodes[index]
+  const transform = transforms[index]
 
-  // let modelZ = 1362
-  let modelZ = 720
+  let modelZ = 1362
+  // let modelZ = 720
   // if(t3d.camera.isPerspectiveCamera) {
-  if(t3d.current.camera.isPerspectiveCamera) {
+  if (t3d.current.camera.isPerspectiveCamera) {
     // modelZ = 1362 * (canvasHeight / 480)
-    // modelZ = 1362 * (480 / 480)
     modelZ = 1362 * (480 / 480)
   }
 
   // if(show) {
-    // const si  = t3d.sceneScale
-    // const cw  = (canvasWidth  / si)
-    // const ch  = (canvasHeight / si)
-    const si = 1.0
-    const cw = (640 / si)
-    const ch = (480 / si)
+  // const si  = t3d.sceneScale
+  // const cw  = (canvasWidth  / si)
+  // const ch  = (canvasHeight / si)
+  const si = 1.0
+  const cw = (640 / si)
+  const ch = (480 / si)
 
-    let scale = face.scale * si * 0.0133
-    let x = -(face.translationX - cw * 0.5) * si
-    let y = -(face.translationY - ch * 0.5) * si
-    let rx = -face.rotationX * 1.30
-    let ry = -face.rotationY * 1.30
-    let rz = face.rotationZ
+  let scale = face.scale * si * 0.0133
+  let x = -(face.translationX - cw * 0.5) * si
+  let y = -(face.translationY - ch * 0.5) * si
+  let rx = -face.rotationX * 1.30
+  let ry = -face.rotationY * 1.30
+  let rz = face.rotationZ
 
-    let ryp = Math.abs(ry) / 30.0
-    let rxp = Math.abs(rx) / 30.0
+  let ryp = Math.abs(ry) / 30.0
+  let rxp = Math.abs(rx) / 30.0
 
-    if (rx < 0) {
-      rx *= 1.0 + ryp
-      ry *= 0.95
-      y -= rxp * 10
+  if (rx < 0) {
+    rx *= 1.0 + ryp
+    ry *= 0.95
+    y -= rxp * 10
+  } else {
+    rx *= 1.33
+    y += rxp * 7
+  }
+
+  if (ry < 0) {
+    if (rx > 0) {
+      rz -= ryp + (ryp * rxp) * 10
     } else {
-      rx *= 1.33
-      y += rxp * 7
+      rz += ryp + (ryp * rxp) * 10
     }
-
-    if (ry < 0) {
-      if (rx > 0) {
-        rz -= ryp + (ryp * rxp) * 10
-      } else {
-        rz += ryp + (ryp * rxp) * 10
-      }
+  } else {
+    if (rx > 0) {
+      rz += ryp + (ryp * rxp) * 10
     } else {
-      if (rx > 0) {
-        rz += ryp + (ryp * rxp) * 10
-      } else {
-        rz -= ryp + (ryp * rxp) * 10
-      }
+      rz -= ryp + (ryp * rxp) * 10
     }
+  }
   // }
 
   // if(t3d.camera.isPerspectiveCamera) {
-  if(t3d.current.camera.isPerspectiveCamera) {
+  if (t3d.current.camera.isPerspectiveCamera) {
     rx -= brfv5App.toDegree(Math.atan(y / modelZ)) // perspective camera needs an adjustment for ry.
     ry += brfv5App.toDegree(Math.atan(x / modelZ)) // perspective camera needs an adjustment for ry.
   }
 
-  const diffX       = (x - transform.x)
-  const diffY       = (y - transform.y)
-  const diffXAbs    = Math.abs(diffX)
-  const diffYAbs    = Math.abs(diffY)
+  const diffX = (x - transform.x)
+  const diffY = (y - transform.y)
+  const diffXAbs = Math.abs(diffX)
+  const diffYAbs = Math.abs(diffY)
 
-  if(!baseNode.visible || diffXAbs > 3 || diffYAbs > 3) {
-    transform.x       = transform.x + diffX
-    transform.y       = transform.y + diffY
+  if (!baseNode.visible || diffXAbs > 3 || diffYAbs > 3) {
+    transform.x = transform.x + diffX
+    transform.y = transform.y + diffY
   } else {
-    transform.x       = transform.x + diffX * (diffXAbs < 1.0 ? 0.25 : (diffXAbs < 2.0 ? 0.50 : 0.75))
-    transform.y       = transform.y + diffY * (diffYAbs < 1.0 ? 0.25 : (diffYAbs < 2.0 ? 0.50 : 0.75))
+    transform.x = transform.x + diffX * (diffXAbs < 1.0 ? 0.25 : (diffXAbs < 2.0 ? 0.50 : 0.75))
+    transform.y = transform.y + diffY * (diffYAbs < 1.0 ? 0.25 : (diffYAbs < 2.0 ? 0.50 : 0.75))
   }
 
-  transform.z       = modelZ - scale * 0.1 // offset a little bit for z sorting
-  transform.scale   = scale// * 0.01 * si * 1.33
+  transform.z = modelZ - scale * 0.1 // offset a little bit for z sorting
+  transform.scale = scale// * 0.01 * si * 1.33
 
-  const diffRx      = (rx - transform.rx)
-  const diffRy      = (ry - transform.ry)
-  const diffRz      = (rz - transform.rz)
-  const diffRxAbs   = Math.abs(diffRx)
-  const diffRyAbs   = Math.abs(diffRy)
-  const diffRzAbs   = Math.abs(diffRz)
+  const diffRx = (rx - transform.rx)
+  const diffRy = (ry - transform.ry)
+  const diffRz = (rz - transform.rz)
+  const diffRxAbs = Math.abs(diffRx)
+  const diffRyAbs = Math.abs(diffRy)
+  const diffRzAbs = Math.abs(diffRz)
 
-  transform.rx      = transform.rx + diffRx * (diffRxAbs < 1.0 ? 0.25 : (diffRxAbs < 2.0 ? 0.50 : 0.75))
-  transform.ry      = transform.ry + diffRy * (diffRyAbs < 1.0 ? 0.25 : (diffRyAbs < 2.0 ? 0.50 : 0.75))
-  transform.rz      = transform.rz + diffRz * (diffRzAbs < 1.0 ? 0.25 : (diffRzAbs < 2.0 ? 0.50 : 0.75))
+  transform.rx = transform.rx + diffRx * (diffRxAbs < 1.0 ? 0.25 : (diffRxAbs < 2.0 ? 0.50 : 0.75))
+  transform.ry = transform.ry + diffRy * (diffRyAbs < 1.0 ? 0.25 : (diffRyAbs < 2.0 ? 0.50 : 0.75))
+  transform.rz = transform.rz + diffRz * (diffRzAbs < 1.0 ? 0.25 : (diffRzAbs < 2.0 ? 0.50 : 0.75))
 
   // baseNode.position.set(transform.x, transform.y, transform.z)
   // baseNode.rotation.set(brfv5App.toRadian(transform.rx), brfv5App.toRadian(transform.ry), brfv5App.toRadian(transform.rz))
@@ -320,6 +342,10 @@ const updateByFace = (brfv5App, t3d, face, index, show) => {
   mask.rotation.set(brfv5App.toRadian(transform.rx), brfv5App.toRadian(transform.ry), brfv5App.toRadian(transform.rz))
   mask.scale.set(transform.scale, transform.scale, transform.scale)
 
+  occlusion.position.set(transform.x, transform.y, transform.z)
+  occlusion.rotation.set(brfv5App.toRadian(transform.rx), brfv5App.toRadian(transform.ry), brfv5App.toRadian(transform.rz))
+  occlusion.scale.set(transform.scale, transform.scale, transform.scale)
+
 }
 
 const setNumFaces = (t3d, numFaces) => {
@@ -329,18 +355,18 @@ const setNumFaces = (t3d, numFaces) => {
 
   // if(!isInitialized(t3d)) return false
 
-  const modelNodes      = t3d.current.modelNodes
-  const baseNodes       = t3d.current.baseNodes
-  const transforms      = t3d.current.transforms
-  const scene           = t3d.current.scene
+  const modelNodes = t3d.current.modelNodes
+  const baseNodes = t3d.current.baseNodes
+  const transforms = t3d.current.transforms
+  const scene = t3d.current.scene
 
-  for(let i = baseNodes.length; i < numFaces; i++) {
+  for (let i = baseNodes.length; i < numFaces; i++) {
     const baseNode = new THREE.Group()
-    baseNode.name = "baseNode_" + i
+    baseNode.name = 'baseNode_' + i
     baseNodes.push(baseNode)
 
     const modelNode = new THREE.Group()
-    modelNode.name = "modelNode_" + i
+    modelNode.name = 'modelNode_' + i
     modelNodes.push(modelNode)
 
     transforms.push({ x: 0, y: 0, z: 0, rx: 0, ry: 0, rz: 0, scale: 0 })
@@ -351,30 +377,6 @@ const setNumFaces = (t3d, numFaces) => {
 
   return true
 }
-
-// const initFaceFilter = (videoSettings, stats) => {
-//   JEEFACEFILTERAPI.init({
-//     followZRot: true,
-//     canvasId: 'canvas',
-//     NNCpath: 'js/vendor/', // root of NNC.json file
-//     maxFacesDetected: 1,
-//     callbackReady: (errCode, spec) => {
-//       if (errCode) {
-//         console.error('ERR =', errCode)
-//         return
-//       }
-//
-//       initThreeScene(spec)
-//     },
-//
-//     // Animation Loop
-//     callbackTrack: (detectState) => {
-//       stats && stats.current && stats.current.begin()
-//       THREE.JeelizHelper.render(detectState, THREECAMERA)
-//       stats.current.end()
-//     },
-//   })
-// }
 
 function App({ brfv5App }) {
   const stats = useRef(null)
@@ -437,8 +439,9 @@ function App({ brfv5App }) {
         brfv5App.configureFaceTracking(_brfv5Config, 3, true)
 
         // TODO: Restrict tilt
-        _brfv5Config.faceTrackingConfig.enableFreeRotation = false
-        _brfv5Config.faceTrackingConfig.maxRotationZReset = 34.0
+        _brfv5Config.faceTrackingConfig.enableFreeRotation = true
+        // _brfv5Config.faceTrackingConfig.maxRotationZReset = 34.0
+        _brfv5Config.faceTrackingConfig.maxRotationZReset = 999.0
         _brfv5Manager.configure(_brfv5Config)
         // update3DLayout(t3d, _width, _height)
         // _threejs.style.transform = 'scale(' + (1.0 / t3d.sceneScale) + ')'
