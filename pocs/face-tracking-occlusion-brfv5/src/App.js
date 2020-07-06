@@ -7,14 +7,10 @@ import styles from './App.module.scss'
 
 
 const { THREE } = window
-let THREECAMERA, maskMesh, maskMaterial
+let maskMesh, maskMaterial
 let selectedTexture = 0
 const textures = []
 const cx = classnames.bind(styles)
-
-const handleFaceDetect = (faceIndex, isDetected) => {
-  // handle detection events here
-}
 
 const handleClick = () => {
   selectedTexture++
@@ -221,8 +217,8 @@ const initThreeScene = (scene, camera, renderer, controls, t3d) => {
 
       const pLight = new THREE.PointLight(0xffffff, 1, 100)
       pLight.position.set(-15, -0, 1302)
-      const sphereSize = 10
-      const pointLightHelper = new THREE.PointLightHelper(pLight, sphereSize)
+      // const sphereSize = 10
+      // const pointLightHelper = new THREE.PointLightHelper(pLight, sphereSize)
       // scene.current.add(pointLightHelper)
       scene.current.add(pLight)
       scene.current.add(new THREE.AmbientLight(0xffffff, 0.5))
@@ -241,7 +237,7 @@ const updateByFace = (brfv5App, t3d, face, index, show) => {
   count = count + 0.1
   const transforms = t3d.current.transforms
   const baseNodes = t3d.current.baseNodes
-  const scene = t3d.current.scene
+  // const scene = t3d.current.scene
   const mask = t3d.current.mask
   const occlusion = t3d.current.occlusion
   // console.log(scene)
@@ -502,7 +498,7 @@ function App({ brfv5App }) {
       requestAnimationFrame(trackFaces)
     }
 
-  }, [])
+  }, [brfv5App])
 
   return (
     <div
