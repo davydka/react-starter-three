@@ -25,3 +25,5 @@ yarn-error.log*
 /.idea
 
 *.blend1
+
+/storybook-static
