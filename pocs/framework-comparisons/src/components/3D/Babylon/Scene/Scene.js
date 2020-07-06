@@ -8,7 +8,7 @@ import styles from './Scene.module.scss'
 const cx = classnames.bind(styles)
 
 
-const BScene = ({ children = null, showGridHelper = false }) => {
+const BScene = ({ children = null, showGridHelper = false, hemisphereIntensity = 0.7 }) => {
 
   return (
     <div className={cx('container')}>
@@ -26,7 +26,7 @@ const BScene = ({ children = null, showGridHelper = false }) => {
           />
           <hemisphericLight
             name="hemisphericLight"
-            intensity={0.7}
+            intensity={hemisphereIntensity}
             direction={new Vector3(0, 1, 1)}
           />
           {(!children || showGridHelper) && (

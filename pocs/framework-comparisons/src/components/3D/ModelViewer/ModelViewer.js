@@ -6,7 +6,7 @@ import styles from './ModelViewer.module.scss'
 
 const cx = classnames.bind(styles)
 
-const ModelViewer = ({ model, cameraOrbit = `${-Math.PI / 2}rad ${(Math.PI / 2) / 2}rad 24m`} ) => {
+const ModelViewer = ({ model, cameraOrbit = `${-Math.PI / 2}rad ${(Math.PI / 2) / 2}rad 24m`, ...rest} ) => {
   return (
     <model-viewer
       src={model}
@@ -17,6 +17,7 @@ const ModelViewer = ({ model, cameraOrbit = `${-Math.PI / 2}rad ${(Math.PI / 2) 
       camera-orbit={cameraOrbit}
       camera-target='0 0 0'
       class={cx('modelViewer')} // note: model-viewer does not respect React className
+      {...rest}
     />
   )
 }

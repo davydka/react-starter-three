@@ -13,7 +13,7 @@ export default {
 export const LatticeModel = () => {
   return (
     <Page style={{ backgroundColor: white, color: darkGrey }}>
-      <ModelViewer model={'/assets/models/groundLattice.gltf'}/>
+      <ModelViewer exposure='0.1' model={'/assets/models/groundLattice.gltf'}/>
     </Page>
   )
 }
@@ -29,7 +29,16 @@ export const Mask = () => {
 export const Wheel = () => {
   return (
     <Page style={{ backgroundColor: white, color: darkGrey }}>
-      <ModelViewer model={'/assets/models/Wheel.gltf'} cameraOrbit={`${(Math.PI / 2) * 180}rad ${(Math.PI / 2) / 1.6}rad 24m`}/>
+      <ModelViewer model={'/assets/models/Wheel.gltf'} exposure='0.4' cameraOrbit={`${(Math.PI / 2) * 180}rad ${(Math.PI / 2) / 1.6}rad 24m`}/>
     </Page>
   )
 }
+
+export const Tire = () => {
+  return (
+    <Page style={{ backgroundColor: white, color: darkGrey }}>
+      <ModelViewer model={'/assets/models/tire.gltf'} exposure='0.1' cameraOrbit={`${(Math.PI / 2) * 180}rad ${(Math.PI / 2) / 1.6}rad 24m`}/>
+    </Page>
+  )
+}
+
